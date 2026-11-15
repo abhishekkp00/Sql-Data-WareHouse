@@ -191,28 +191,27 @@ Helping the business understand which product categories need attention.
 **How does the SQL work?**
 CTE 1 (`category_revenue`): Aggregate total revenue per category.
 
-CTE 2 (`category_summary`): Use `AVG(total_revenue) OVER ()` — a window function with no
-`PARTITION BY` — to calculate the average across all categories and add it as a column next
-to each category row.
+CTE 2 (`category_summary`): Use `SUM(total_revenue) OVER ()` and `COUNT(*) OVER ()` — window
+functions with no `PARTITION BY` — to calculate each category's share of total revenue and the
+"equal share" (100% divided by the number of categories).
 
-Main SELECT: Use a `CASE` statement to label each category as `'Underperforming'` if its
-revenue is less than 80% of the category average, otherwise `'Healthy'`. Also calculate each
-category's revenue as a percentage of the average.
+Main SELECT: Use a `CASE` statement to label a category `'Underperforming'` if its share is
+below 50% of the equal share (`@underperformance_factor = 0.50`), otherwise `'Healthy'`.
 
-**Why 80%?**
-80% of the average is a defensible but adjustable threshold. In a real interview, you should
-say: "I chose 80% as a starting point. In practice, the business team would define the threshold
-based on their goals. The query makes it easy to change the number."
+**Why a share-based rule and not "80% of the average"?**
+The earlier version compared each category with the average category revenue. One dominant
+category (Bikes is about 96% of revenue) inflates the average and makes the comparison
+misleading. The share-based rule is easier to explain. The 50% factor is a business
+assumption; say so in the interview: "The business team would define the threshold."
 
-**SQL concepts used:** `CTE`, `JOIN`, `GROUP BY`, `SUM`, `AVG` (window function), `CASE`, `ORDER BY`
+**SQL concepts used:** `CTE`, `JOIN`, `GROUP BY`, `SUM OVER` / `COUNT OVER` (window functions), `COALESCE`, `CASE`, `ORDER BY`
 
 **Interview follow-up questions you may be asked:**
 - Could a category be underperforming because it has fewer products?
-  → Yes. That is why the threshold comparison is contextual, not an absolute number. A proper
-    analysis would also look at revenue per product within each category.
-- What is `AVG() OVER ()`?
-  → It is an aggregate window function. The empty `OVER ()` means: compute the average across
-    the entire result set. Each row gets the same average value, which allows per-row comparison.
+  → Yes. A proper analysis would also look at revenue per product and margin.
+- What is `SUM() OVER ()`?
+  → An aggregate window function. The empty `OVER ()` means: compute across the entire result
+    set, so each row gets the same total and can be compared with it.
 
 ---
 
@@ -278,18 +277,19 @@ it is vulnerable if any of them leave.
 **How does the SQL work?**
 CTE 1 (`customer_revenue`): Revenue per customer.
 
-CTE 2 (`ranked_customers`): Assign a revenue rank using `RANK() OVER (ORDER BY total_revenue DESC)`.
+CTE 2 (`ranked_customers`): Assign a rank using `ROW_NUMBER() OVER (ORDER BY total_revenue DESC, customer_key)`.
 
 CTE 3 (`total_revenue`): Calculate the grand total of all customer revenue.
 
 Main SELECT: Use `CROSS JOIN` to bring the grand total into every row, then filter to
 `revenue_rank <= 10` and sum. Divide by the grand total to get the percentage.
 
-**Why `RANK()` instead of `ROW_NUMBER()`?**
-`RANK()` correctly handles ties. If two customers have identical revenue at rank 10, both
-are included. `ROW_NUMBER()` would arbitrarily assign 10 and 11, potentially excluding one.
+**Why `ROW_NUMBER()` with a tie-breaker and not `RANK()`?**
+With `RANK()`, ties at the cut-off would return more than 10 customers. `ROW_NUMBER()` with
+`customer_key` as a tie-breaker always selects exactly 10 and matches Query 2. (In this data the
+highest two customers tie at rank 1, so tie handling matters.)
 
-**SQL concepts used:** `CTE`, `JOIN`, `GROUP BY`, `SUM`, `RANK` (window function), `CROSS JOIN`
+**SQL concepts used:** `CTE`, `JOIN`, `GROUP BY`, `SUM`, `ROW_NUMBER` (window function), `CROSS JOIN`
 
 **Interview follow-up questions you may be asked:**
 - What is a CROSS JOIN?

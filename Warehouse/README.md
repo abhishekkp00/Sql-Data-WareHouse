@@ -33,10 +33,12 @@ flowchart LR
 | EDA | Explore distributions, data quality, relationships, and patterns | SQL and notebooks |
 | Analytics | Answer business questions and derive KPIs | SQL analyses and reports |
 
-## Canonical Repository Structure
+## Repository Structure
+
+This folder is one of three top-level project folders (`Warehouse/`, `EDA/`, `analytics/`). Paths below are relative to `Warehouse/`.
 
 ```text
-Sql-Data-WareHouse/
+Warehouse/
 ├── datasets/
 │   ├── source_crm/
 │   └── source_erp/
@@ -45,24 +47,17 @@ Sql-Data-WareHouse/
 │   ├── bronze/
 │   ├── silver/
 │   └── gold/
-├── EDA/
-│   ├── sql/
-│   ├── notebooks/
-│   └── outputs/
-├── analytics/
-│   ├── sql/
-│   └── reports/
 ├── tests/
 ├── docs/
 └── README.md
 ```
 
 **Folder conventions**
-- `datasets/` is the only location for original CRM and ERP CSV files. Do not copy Bronze exports into `EDA/`.
-- `EDA/sql/` and `EDA/notebooks/` contain exploratory work. Stable, reusable transformations belong in `scripts/`.
-- `analytics/sql/` contains business-question queries and KPI analysis; presentation-ready outputs belong in `analytics/reports/`.
-- `tests/` contains repeatable data-quality checks.
+- `datasets/` holds the original CRM and ERP CSV files.
+- `scripts/` holds the stable database, Bronze, Silver, and Gold SQL.
+- `tests/` contains repeatable data-quality checks for Silver and Gold.
 - `docs/` contains requirements, naming conventions, the data catalog, and project diagrams.
+- Exploratory SQL lives in `../EDA/`; business-question SQL, quality checks, and insights live in `../analytics/`.
 
 ## Source Data
 
@@ -77,17 +72,12 @@ Sql-Data-WareHouse/
 
 ## Implementation Status
 
-### Completed
-- Database and Bronze/Silver/Gold schemas initialized.
-- Bronze tables and CSV ingestion procedure created.
-- Silver tables and transformation procedure created.
-- Silver load executed and row counts verified.
-
-### In progress
-- Gold dimension and fact views.
-- Gold quality validation.
-- EDA and business analytics workstreams.
-- Final data catalog and model documentation.
+- Database and Bronze/Silver/Gold schemas initialized (`scripts/database_init.sql`).
+- Bronze tables and CSV ingestion procedure (`bronze.load_bronze`).
+- Silver tables and transformation procedure (`silver.load_silver`).
+- Gold views: `gold.dim_customers`, `gold.dim_products`, `gold.fact_sales`.
+- Silver and Gold quality checks in `tests/`.
+- EDA scripts in `../EDA/` and business analytics in `../analytics/`.
 
 ## Observed Silver Load
 
@@ -184,21 +174,6 @@ For SQL Server scripts containing `GO`, use DBeaver's **Execute SQL Script** act
 - Dimensional modeling and Star Schema
 - Surrogate keys and fact-to-dimension joins
 - Data quality and referential-integrity checks
-
-## Planned EDA
-
-- Profile nulls, duplicates, ranges, and distinct values.
-- Inspect distributions of customer, product, and sales attributes.
-- Analyze date coverage and data anomalies.
-- Explore relationships among customers, locations, products, and sales.
-
-## Planned Business Analytics
-
-- Customer purchase behavior and customer ranking.
-- Product and category performance.
-- Sales by year, month, region, and product line.
-- Revenue, quantity, order, and average-price KPIs.
-- Trend and cumulative analysis using SQL window functions.
 
 ## Documentation
 
