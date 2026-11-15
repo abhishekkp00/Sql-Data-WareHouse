@@ -1,42 +1,37 @@
 /*
-=============================================================
-Create Database and Schemas
-=============================================================
-Script Purpose:
-    This script creates a new database named 'DataWarehouse' after checking if it already exists.
-    If the database exists, it is dropped and recreated. Additionally, the script sets up three schemas
-    within the database: 'bronze', 'silver', and 'gold'.
+===============================================================================
+Database Initialization: DataWarehouse
+===============================================================================
+Purpose:
+    Creates the DataWarehouse database when it does not exist and ensures
+    the Bronze, Silver, and Gold schemas are available.
 
-WARNING:
-    Running this script will drop the entire 'DataWarehouse' database if it exists.
-    All data in the database will be permanently deleted. Proceed with caution
-    and ensure you have proper backups before running this script.
+Safety:
+    This script is NON-DESTRUCTIVE. It does not drop or recreate an existing
+    database. Back up the database before making manual destructive changes.
+===============================================================================
 */
 
 USE master;
 GO
 
--- Drop and recreate the 'DataWarehouse' database
-IF EXISTS (SELECT 1 FROM sys.databases WHERE name = 'DataWarehouse')
+IF DB_ID(N'DataWarehouse') IS NULL
 BEGIN
-    ALTER DATABASE DataWarehouse SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
-    DROP DATABASE DataWarehouse;
+    CREATE DATABASE DataWarehouse;
 END;
-GO
-
--- Create the 'DataWarehouse' database
-CREATE DATABASE DataWarehouse;
 GO
 
 USE DataWarehouse;
 GO
 
--- Create Schemas
-CREATE SCHEMA bronze;
+IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = N'bronze')
+    EXEC(N'CREATE SCHEMA bronze');
 GO
 
-CREATE SCHEMA silver;
+IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = N'silver')
+    EXEC(N'CREATE SCHEMA silver');
 GO
 
-CREATE SCHEMA gold;
+IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = N'gold')
+    EXEC(N'CREATE SCHEMA gold');
 GO

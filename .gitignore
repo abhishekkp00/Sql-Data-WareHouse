@@ -1,20 +1,33 @@
-# Ignore system-specific files
+# OS and editor files
 .DS_Store
 Thumbs.db
+.vscode/
+.idea/
 
-# Ignore local configuration files
-*.env
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
 
-# Ignore SQL Server-related files
+# SQL Server database files and backups
 *.mdf
 *.ldf
 *.ndf
-
-# Ignore temporary or backup files
-*.log
 *.bak
-*.tmp
+*.trn
 
-# Ignore IDE-specific files
-.vscode/
-.idea/
+# Logs, caches, and temporary files
+*.log
+*.tmp
+__pycache__/
+.ipynb_checkpoints/
+
+# Generated EDA outputs: commit only selected final deliverables
+EDA/outputs/*
+!EDA/outputs/.gitkeep
+
+# Generated analytical reports: commit only selected final deliverables
+analytics/reports/*
+!analytics/reports/.gitkeep
