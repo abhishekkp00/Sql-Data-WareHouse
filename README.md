@@ -19,8 +19,7 @@ An end-to-end SQL Server project that integrates CRM and ERP source data into a 
 13. [Setup and Execution Guide](#13-setup-and-execution-guide)
 14. [Limitations and Future Improvements](#14-limitations-and-future-improvements)
 15. [Learning Outcomes](#15-learning-outcomes)
-16. [Acknowledgements](#16-acknowledgements)
-17. [Author](#17-author)
+16. [Author](#17-author)
 
 ---
 
@@ -241,7 +240,7 @@ The notebook [`analytics/warehouse_analytics.ipynb`](analytics/warehouse_analyti
 
 Business assumptions (documented in the file header): AOV is calculated per order (not per line); "recent" is measured against the latest order date in the data; a category is "underperforming" when its revenue share is below 50% of an equal share. Customers without purchases are excluded from revenue queries; orders with NULL dates are excluded from time-based queries.
 
-Explanations of every query for interview preparation: [`analytics/Project_Explanation.md`](analytics/Project_Explanation.md).
+Explanations of every query for preparation: [`analytics/Project_Explanation.md`](analytics/Project_Explanation.md).
 
 ## 11. Data Quality Validation
 
@@ -372,15 +371,7 @@ Full details, formulas, and limitations: [`analytics/business_insights.md`](anal
 - Validating results independently and documenting assumptions and limitations honestly.
 - Basic Python data analysis and visualization with Pandas, Matplotlib, and Seaborn.
 
-## 16. Acknowledgements
-
-The Bronze–Silver–Gold warehouse (database setup, ETL scripts, Gold views, and the source datasets) follows the learning project **SQL Data Warehouse Project** by Data With Baraa: <https://github.com/DataWithBaraa/sql-data-warehouse-project>.
-
-| Based on the original tutorial | Added by me |
-|---|---|
-| Warehouse architecture, Bronze/Silver/Gold ETL, Gold star schema, source CSV files | EDA scripts and EDA documentation, Python notebook and charts, eight business queries, additional data quality checks, business insights, project explanation, repository organization, and this README |
-
-## 17. Author
+## 16. Author
 
 **Abhishek Kr Prajapati**
 GitHub: [@abhishekkp00](https://github.com/abhishekkp00)
