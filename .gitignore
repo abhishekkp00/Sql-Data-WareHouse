@@ -24,10 +24,8 @@ Thumbs.db
 __pycache__/
 .ipynb_checkpoints/
 
-# Generated EDA outputs: commit only selected final deliverables
-EDA/outputs/*
-!EDA/outputs/.gitkeep
-
-# Generated analytical reports: commit only selected final deliverables
-analytics/reports/*
-!analytics/reports/.gitkeep
+# Generated exploratory and reporting outputs
+/SQL Data Warehouse/EDA/outputs/*
+!/SQL Data Warehouse/EDA/outputs/.gitkeep
+/SQL Data Warehouse/Analytics/reports/*
+!/SQL Data Warehouse/Analytics/reports/.gitkeep
