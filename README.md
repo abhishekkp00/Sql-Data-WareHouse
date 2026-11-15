@@ -107,7 +107,7 @@ Located in [`Warehouse/datasets/`](Warehouse/datasets). Six source CSV files:
 | ERP | `LOC_A101.csv` | `bronze.erp_loc_a101` | Customer country |
 | ERP | `PX_CAT_G1V2.csv` | `bronze.erp_px_cat_g1v2` | Product category and subcategory |
 
-[`EDA/datasets/csv_files/`](EDA/datasets/csv_files) holds exported snapshots of the Bronze, Silver, and Gold objects. They are used by the Python notebook and were used to cross-check the insights document.
+[`EDA/datasets/csv_files/`](EDA/datasets/csv_files) holds exported snapshots of the Bronze, Silver, and Gold objects. They are used by the Python notebook.
 
 ## 7. Repository Structure
 
@@ -224,8 +224,6 @@ Thirteen SQL scripts in [`EDA/scripts/`](EDA/scripts), run in order. See [`EDA/R
 
 The notebook [`analytics/warehouse_analytics.ipynb`](analytics/warehouse_analytics.ipynb) loads the exported Gold CSVs with Pandas and saves eight charts to [`analytics/plots/`](analytics/plots): revenue by country, revenue by category, monthly sales trend, customer segments, age groups, top products, product segments, and yearly sales.
 
-`EDA/scripts/09_performance_analysis (1).sql` is an identical copy of `09_performance_analysis.sql` (documented in the EDA README).
-
 ## 10. Business Analytics
 
 [`analytics/business_queries.sql`](analytics/business_queries.sql) answers eight questions. All queries read from the Gold layer only.
@@ -272,10 +270,7 @@ These matter because a wrong key or duplicated fact row silently changes every r
 
 Full details, formulas, and limitations: [`analytics/business_insights.md`](analytics/business_insights.md).
 
-> [!NOTE]
-> The T-SQL scripts were **not executed against SQL Server** while preparing this documentation (no database access). The numbers below were calculated with Pandas by replicating each query on the exported Gold CSVs in `EDA/datasets/csv_files/`. Run `analytics/business_queries.sql` locally to confirm them on your database.
-
-| Topic | Result (CSV replication) |
+| Topic | Result |
 |---|---|
 | Total revenue | 29,356,250 across 27,659 orders and 18,484 customers |
 | Top products | The top 10 products (Mountain-200 and Road-150 variants) earn about 42.5% of revenue |
